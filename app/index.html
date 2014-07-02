@@ -1,0 +1,168 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <title>kotodama</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css styles/vendor.css -->
+    <link rel="stylesheet" href="../bower_components/nvd3/nv.d3.min.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/nvd3/src/nv.d3.css" />
+    <link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="../bower_components/rickshaw/rickshaw.css">
+    <link rel="stylesheet" href="../bower_components/vis/dist/vis.min.css">
+
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <!--<link rel="stylesheet" href="styles/grayscale.css">-->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+    <style type="text/css">
+        body {
+            font: 10pt arial;
+        }
+        #query-chain {
+            width: 900px;
+            height: 600px;
+            border: 1px solid lightgray;
+        }
+
+        .row {
+            margin-top:5px;
+            margin-bottom:5px;
+        }
+    </style>
+
+</head>
+<body>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="../bower_components/d3/d3.js"></script>
+<script src="../bower_components/vue/dist/vue.js"></script>
+<script src="../bower_components/nvd3/nv.d3.js"></script>
+<script src="../bower_components/underscore/underscore.js"></script>
+<script src="../bower_components/rickshaw/rickshaw.js"></script>
+<script src="../bower_components/rickshaw/vendor/d3.v3.js"></script>
+<script src="../bower_components/jquery-ui/ui/jquery-ui.js"></script>
+<script src="../bower_components/momentjs/moment.js"></script>
+<script src="../bower_components/vis/dist/vis.min.js"></script>
+<script src="../bower_components/jshashes/hashes.min.js"></script>
+
+
+
+<div class="container">
+    <div id="norichain">
+        <h1>{{title | uppercase}}</h1>
+        <div class="row">
+            <div class="col-md-12" id="api-param" role="form">
+                <label for="host" class="col-md-1 control-label">host</label>
+                <div class="col-md-3">
+                    <input class="form-control" id="host" placeholder="localhost (default)" v-model="host">
+                </div>
+                <label for="port" class="col-md-1 control-label">Port</label>
+                <div class="col-md-2">
+                    <input class="form-control" id="port" placeholder="26578 (default)" v-model="port">
+                </div>
+                <div class="col-md-5">
+                    <button type="button" id="fetch" class="btn">fetch</button>
+                    <button type="button" id="merge" class="btn">merge</button>
+                    <button type="button" id="commit" class="btn">commit</button>
+                    <button type="button" id="push" class="btn">push</button>
+                    <button type="button" id="push-force" class="btn">push -f</button>
+                    <button type="button" id="export" class="btn">export</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3" >
+                <p>Server hash  : {{serverHash}}</p>
+                <p>EditOrigin hash : {{editOriginHash}}</p>
+                <p>Local hash  : {{localHash}}</p>
+                <p>Committed hash : {{committedHash}}</p>
+            </div>
+            <div class="col-md-5">
+                <button type="button" id="reset-server" class="btn">reset to server</button>
+                <button type="button" id="reset-edit-origin" class="btn">reset to edit origin</button>
+                <button type="button" id="reset-committed" class="btn">reset to last commit</button>
+            </div>
+            <div class="col-md-1" >
+                <button type="button" id="import" class="btn">import</button>
+            </div>
+            <div class="col-md-3" >
+                <input type="file" id="import-file" name="import-file">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" >
+                <div id="query-chain" style="background: rgba(0,0,0,0.4);">
+                </div>
+            </div>
+        </div>
+        <div id="editor" style="display:none;">
+            <div class="row">
+                <div class="col-md-7" >
+                    <div id="query">
+                        <label for="query">Query</label>
+                        <textarea name="epl-expression" id="expression" class="form-control" rows="10" v-model="expression">{{expression}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-5" >
+                    <div>
+                        <label for="queryname">Name</label>
+                        <input class="form-control" id="queryname" v-model="queryName">
+                    </div>
+                    <div>
+                        <label for="querygroup">Group</label>
+                        <input class="form-control" id="querygroup" v-model="queryGroup">
+                    </div>
+                    <div>
+                        <button type="button" id="apply" class="btn">apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p>diff</p>
+                <select v-model="selectedQuery1">
+                    <option>Server</option>
+                    <option>Edit Origin</option>
+                    <option>Local</option>
+                    <option>Last Committed</option>
+                </select>
+                {{selectedQuery1}}
+                <select v-model="selectedQuery2">
+                    <option>Server</option>
+                    <option>Edit Origin</option>
+                    <option>Local</option>
+                    <option>Last Committed</option>
+                </select>
+                {{selectedQuery2}}
+                <div>{{diffView}}</div>
+                <div class="row">
+                    <div class="col-md-7" >
+                        <div id="diff-origin-server">
+                            <div id="diff-origin-server-added">{{diffOriginServerAdded}}</div>
+                            <div id="diff-origin-server-removed">{{diffOriginServerRemoved}}</div>
+                            <div id="diff-origin-server-updated">{{diffOriginServerUpdated}}</div>
+                        </div>
+                        <div id="diff-origin-committed">
+                            <div id="diff-origin-committed-added">{{diffOriginCommittedAddedd}}</div>
+                            <div id="diff-origin-committed-removed">{{diffOriginCommittedRemoved}}</div>
+                            <div id="diff-origin-committed-updated">{{diffOriginCommittedUpdated}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="scripts/querychain.js"></script>
+</body>
+</html>
