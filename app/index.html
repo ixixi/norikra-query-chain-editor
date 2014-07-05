@@ -9,7 +9,6 @@
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="../bower_components/nvd3/nv.d3.min.css">
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/nvd3/src/nv.d3.css" />
@@ -69,7 +68,7 @@
                     <button type="button" id="fetch" class="btn">fetch</button>
                     <button type="button" id="merge" class="btn">merge</button>
                     <button type="button" id="commit" class="btn">commit</button>
-                    <button type="button" id="push" class="btn">push</button>
+                    <button type="button" id="push" class="btn disabled">push</button>
                     <button type="button" id="push-force" class="btn">push -f</button>
                     <button type="button" id="export" class="btn">export</button>
                 </div>
@@ -77,10 +76,24 @@
         </div>
         <div class="row">
             <div class="col-md-3" >
-                <p>Server hash  : {{serverHash}}</p>
-                <p>EditOrigin hash : {{editOriginHash}}</p>
-                <p>Local hash  : {{localHash}}</p>
-                <p>Committed hash : {{committedHash}}</p>
+                <table class="table">
+                    <tr>
+                        <td>Server</td>
+                        <td>{{serverHash}}</td>
+                    </tr>
+                    <tr>
+                        <td>EditOrigin</td>
+                        <td>{{editOriginHash}}</td>
+                    </tr>
+                    <tr>
+                        <td>Local</td>
+                        <td>{{localHash}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Commit</td>
+                        <td>{{committedHash}}</td>
+                    </tr>
+                </table>
             </div>
             <div class="col-md-5">
                 <button type="button" id="reset-server" class="btn">reset to server</button>
