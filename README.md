@@ -3,7 +3,7 @@ norikra-query-chain-editor (QCE)
 
 norikra query-chain editor.(QCE)
 
-![norikra qce screenshot](https://gist.githubusercontent.com/ixixi/aa8a47ba6252230fccd2/raw/6bb35c75e64cfa29220782eef3d0f32974194d37/screenshot.png)
+![norikra qce screenshot](https://gist.githubusercontent.com/ixixi/aa8a47ba6252230fccd2/raw/37910bacd1a8780308fef66e77a8cacf644916dc/screenshot.png)
 
 
 ## Features
