@@ -74,14 +74,14 @@ var norichain  = new Vue({
     el: '#norichain',
 
     ready:function(){
-        this.$watch('selectedQuery1',function(){
-            console.log('selected:'+this.selectedQuery1)
-            this.showDiff();
-        }),
-            this.$watch('selectedQuery2',function(){
-                console.log('selected2:'+this.selectedQuery2);
-                this.showDiff();
-            })
+        //this.$watch('selectedQuery1',function(){
+        //    console.log('selected:'+this.selectedQuery1)
+        //    this.showDiff();
+        //}),
+        //    this.$watch('selectedQuery2',function(){
+        //        console.log('selected2:'+this.selectedQuery2);
+        //        this.showDiff();
+        //     })
     },
     data: {
         title: 'Norikra query chain editor',
@@ -113,6 +113,13 @@ var norichain  = new Vue({
         }
     },
     methods: {
+        getPushQueries: function(){
+            console.log(this.selectMap['Server']);
+            console.log(this.selectMap['Last Committed']);
+            var diffData = this.diff(this.selectMap['Server'](),this.selectMap['Last Committed']())
+            console.log(diffData);
+            return diffData;
+        },
         showDiff: function(){
             if (!(this.selectedQuery1&&this.selectedQuery2)){
                 return;
@@ -121,7 +128,7 @@ var norichain  = new Vue({
             var to = this.selectMap[this.selectedQuery2]();
             var diffData = this.diff(from,to);
             console.log(diffData);
-            this.diffView = JSON.stringify(diffData);
+            this.diffView = JSON.stringify(diffData,null,4);
         },
         normalizedHash: function(rawQueries) {
             console.log('normalizedHash');
@@ -253,6 +260,38 @@ var norichain  = new Vue({
         pushQueries: function(){
             //TODO: implement
         },
+        forcePushQueries: function(){
+            console.log('force-push');
+            var diffQueries = this.getPushQueries();
+            console.log(diffQueries);
+            var urlBase = 'http://'+this.host+':'+this.port+'/api';
+            _.each(diffQueries.addedQueries,function(q){
+                var registerQuery = {
+                    query_name : q.name,
+                    query_group : q.group,
+                    expression : q.expression
+                };
+                console.log(registerQuery);
+                $.post(urlBase+'/register',
+                    { query_name :{aa:"world"}},
+                    function(result){
+                        console.log(result);
+                },"json")
+
+            });
+            _.each(diffQueries.removedQueries,function(q){
+                console.log(q);
+            });
+            _.each(diffQueries.updateddQueries,function(q){
+                console.log(q);
+            });
+
+            //$.post("http://"+this.host+":"+this.port+"/api/queries",jsondata,function(result){console.log(result);})
+        },
+        forcePushQuery: function(){
+
+            //$.post("http://"+this.host+":"+this.port+"/api/queries",jsondata,function(result){console.log(result);})
+        },
         resetToServer: function(){
             this.localQueries = $.extend(true, [], this.serverQueries);
             this.editOriginQueries = $.extend(true, [], this.serverQueries);
@@ -375,6 +414,9 @@ $(document).ready(function () {
     $("#push").click(function () {
         norichain.pushQueries();
     });
+    $("#push-force").click(function () {
+        norichain.forcePushQueries();
+    });
     $("#import").click(function () {
         norichain.importQueries();
     });
@@ -392,6 +434,9 @@ $(document).ready(function () {
     });
     $("#reset-committed").click(function () {
         norichain.resetToCommitted();
+    });
+    $("#show-diff").click(function () {
+        norichain.showDiff();
     });
 });
 

@@ -19,15 +19,6 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
     <style type="text/css">
-        body {
-            font: 10pt arial;
-        }
-        #query-chain {
-            width: 900px;
-            height: 600px;
-            border: 1px solid lightgray;
-        }
-
         .row {
             margin-top:5px;
             margin-bottom:5px;
@@ -138,22 +129,22 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <p>diff</p>
                 <select v-model="selectedQuery1">
                     <option>Server</option>
                     <option>Edit Origin</option>
                     <option>Local</option>
                     <option>Last Committed</option>
                 </select>
-                {{selectedQuery1}}
+                <!--{{selectedQuery1}}-->
                 <select v-model="selectedQuery2">
                     <option>Server</option>
                     <option>Edit Origin</option>
                     <option>Local</option>
                     <option>Last Committed</option>
                 </select>
-                {{selectedQuery2}}
-                <div>{{diffView}}</div>
+                <!--{{selectedQuery2}}-->
+                <button type="button" class="btn" id="show-diff">show-diff</button>
+                <textarea name="diff-view" id="diffView" class="form-control" v-model="diffView" rows="15">{{diffView}}</textarea>
                 <div class="row">
                     <div class="col-md-7" >
                         <div id="diff-origin-server">
