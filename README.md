@@ -8,5 +8,7 @@ norikra query-chain editor
 ```bash
 $ git clone https://github.com/ixixi/norikra-query-chain-editor
 $ cd norikra-query-chain-editor
+$ npm install
+$ bower install
 $ grunt server
 ```

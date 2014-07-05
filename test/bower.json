@@ -1,5 +1,5 @@
 {
-  "name": "kotodama",
+  "name": "qce",
   "private": true,
   "dependencies": {
     "chai": "~1.8.0",
