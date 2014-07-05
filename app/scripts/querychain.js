@@ -272,11 +272,35 @@ var norichain  = new Vue({
                     expression : q.expression
                 };
                 console.log(registerQuery);
-                $.post(urlBase+'/register',
-                    { query_name :{aa:"world"}},
-                    function(result){
-                        console.log(result);
-                },"json")
+                $.ajax(
+                    {
+                        type:'post',
+                        url: urlBase+'/register',
+                        data:JSON.stringify(registerQuery),
+                        contentType: 'application/json',
+                        //contentType: 'application/JSON',
+                        headers: {
+                            //'Content-Type': 'application/json'
+                            'aaa': 'bbb'
+                        },
+                        dataType:'json',
+                        crossDomain: true,
+
+                        success: function(result) {
+                            console.log(result);
+                        },
+                        error: function() {
+                            console.log("Server Error. Pleasy try again later.");
+                        },
+                        complete: function() {
+                        }
+                    }
+                )
+                //$.post(urlBase+'/register',
+                //    JSON.stringify({ query_name :{aa:"world"}}),
+                //    function(result){
+                //        console.log(result);
+                //},"json")
 
             });
             _.each(diffQueries.removedQueries,function(q){
