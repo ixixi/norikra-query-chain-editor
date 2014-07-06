@@ -70,6 +70,12 @@ var setting = {
     }
 };
 
+Vue.filter('jsonStringify',function(val){
+    console.log('stringify');
+    console.log(JSON.stringify(val));
+    return JSON.stringify(val);
+});
+
 var norichain  = new Vue({
     el: '#norichain',
 
@@ -98,13 +104,14 @@ var norichain  = new Vue({
         serverHash: '',
         editOriginHash: '',
         committedHash: '',
-        selectedQuery1:null,
-        selectedQuery2:null,
+        selectedQuery1: 'Server',
+        selectedQuery2: 'Last Committed',
         serverQueries: [],
         editOriginQueries: [],
         localQueries: [],
         committedQueries: [],
         diffView: '',
+        diffData:{},
         selectMap : {
             'Server': function(){return norichain.serverQueries;},
             'Edit Origin': function(){return norichain.editOriginQueries;},
@@ -126,9 +133,8 @@ var norichain  = new Vue({
             }
             var from = this.selectMap[this.selectedQuery1]();
             var to = this.selectMap[this.selectedQuery2]();
-            var diffData = this.diff(from,to);
-            console.log(diffData);
-            this.diffView = JSON.stringify(diffData,null,4);
+            this.diffData = this.diff(from,to);
+            this.diffView = JSON.stringify(this.diffData,null,4);
         },
         normalizedHash: function(rawQueries) {
             console.log('normalizedHash');
@@ -306,7 +312,7 @@ var norichain  = new Vue({
             _.each(diffQueries.removedQueries,function(q){
                 console.log(q);
             });
-            _.each(diffQueries.updateddQueries,function(q){
+            _.each(diffQueries.updatedQueries,function(q){
                 console.log(q);
             });
 
@@ -464,7 +470,7 @@ $(document).ready(function () {
     });
 });
 
-console.log(norichain.serverQueries);
-
-norichain.loadQueriesLocalStorage();
-
+$(function(){
+    norichain.loadQueriesLocalStorage();
+    norichain.fetchQueries();
+});

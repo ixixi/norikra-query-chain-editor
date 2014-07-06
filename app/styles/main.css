@@ -13,6 +13,26 @@ body {
     border: 1px solid lightgray;
 }
 
+.added-query{
+    color:#cee4ae;
+    background-color: rgba(0,85,46,0.4);
+}
+.removed-query{
+    color:#640125;
+    background-color: rgba(238,187,203,0.6);
+}
+.updated-query{
+    color:#bbc8e6;
+    background-color: rgba(23,24,75,0.4);
+}
+
+.updated-query-before{
+    color:#d6e9ca;
+}
+
+.updated-query-after{
+    color:#ffd900;
+}
 
 .btn {
     background: #ee827c;
