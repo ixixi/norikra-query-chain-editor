@@ -43,6 +43,10 @@ body {
     background: #f6bfbc;
 }
 
+.reset-btn {
+    margin-top: 3px;
+}
+
 .hero-unit {
     margin: 50px auto 0 auto;
     width: 300px;

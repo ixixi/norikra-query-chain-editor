@@ -70,11 +70,25 @@ var setting = {
     }
 };
 
-Vue.filter('jsonStringify',function(val){
+var LOG_TYPE = {
+    INFO: 'info',
+    WARN: 'warn',
+    ERROR: 'error'
+};
+
+Vue.filter(
+    'jsonStringify',function(val){
     console.log('stringify');
     console.log(JSON.stringify(val));
     return JSON.stringify(val);
 });
+
+Vue.filter(
+    'tail', function(arr,num){
+        console.log(arr.slice(-num));
+        return arr.slice(-num);
+    }
+);
 
 var norichain  = new Vue({
     el: '#norichain',
@@ -112,6 +126,7 @@ var norichain  = new Vue({
         committedQueries: [],
         diffView: '',
         diffData:{},
+        logs: [],
         selectMap : {
             'Server': function(){return norichain.serverQueries;},
             'Edit Origin': function(){return norichain.editOriginQueries;},
@@ -235,9 +250,9 @@ var norichain  = new Vue({
         fetchQueries: function() {
             $.getJSON("http://"+this.host+":"+this.port+"/api/queries", function (json) {
                 norichain.serverQueries = $.extend(true, [], json);
-                norichain.updateHash()
             }).done(function () {
                 console.log("query load success");
+                norichain.updateHash()
             }).fail(function () {
                 console.log("error");
             }) .always(function () {
@@ -245,10 +260,6 @@ var norichain  = new Vue({
             });
         },
         mergeQueries: function(){
-            //if (_.isEqual(this.serverQueries,queries)){
-            //    console.log("eq!");
-            //}
-
             //TODO: merge
             this.editOriginQueries = $.extend(true, [], this.serverQueries);
             this.editOriginHash = this.normalizedHash(this.editOriginQueries);
@@ -266,49 +277,83 @@ var norichain  = new Vue({
         pushQueries: function(){
             //TODO: implement
         },
+        registerQuery: function(query){
+            var urlBase = 'http://'+this.host+':'+this.port+'/api';
+            var registerQuery = {
+                query_name : query.name,
+                query_group : query.group,
+                expression : query.expression
+            };
+            console.log(registerQuery);
+            $.ajax(
+                {
+                    type:'post',
+                    url: urlBase+'/register',
+                    data:JSON.stringify(registerQuery),
+                    contentType: 'application/json',
+                    dataType:'json',
+                    success: function(result) {
+                        console.log(result);
+                        norichain.appendLog(LOG_TYPE.INFO,'registerQuery: "'+ query.name +'" seccuess.');
+                    },
+                    error: function(result) {
+                        var res = result.responseJSON;
+                        norichain.appendLog(LOG_TYPE.ERROR,'registerQuery: "'+ query.name +'" failed. { ' + res.error +' | '+ res.message +' }' );
+                        console.log(res.error);
+                        console.log(res.message);
+                    },
+                    complete: function() {
+                        norichain.fetchQueries();
+                    }
+                }
+            );
+        },
+        deregisterQuery: function(query){
+            var urlBase = 'http://'+this.host+':'+this.port+'/api';
+            var deregisterQuery = {
+                query_name : query.name
+            };
+            console.log(deregisterQuery);
+            $.ajax(
+                {
+                    type:'post',
+                    url: urlBase+'/deregister',
+                    data:JSON.stringify(deregisterQuery),
+                    contentType: 'application/json',
+                    dataType:'json',
+                    success: function(result) {
+                        console.log(result);
+                        norichain.appendLog(LOG_TYPE.INFO,'deregisterQuery: "'+ query.name +'" seccuess.');
+                    },
+                    error: function(result) {
+                        var res = result.responseJSON;
+                        norichain.appendLog(LOG_TYPE.ERROR,'deregisterQuery: "'+ query.name +'" failed. { ' + res.error +' | '+ res.message +' }' );
+                        console.log(res.error);
+                        console.log(res.message);
+                    },
+                    complete: function() {
+                        norichain.fetchQueries();
+                    }
+                }
+            );
+        },
         forcePushQueries: function(){
             console.log('force-push');
             var diffQueries = this.getPushQueries();
             console.log(diffQueries);
-            var urlBase = 'http://'+this.host+':'+this.port+'/api';
             _.each(diffQueries.addedQueries,function(q){
-                var registerQuery = {
-                    query_name : q.name,
-                    query_group : q.group,
-                    expression : q.expression
-                };
-                console.log(registerQuery);
-                $.ajax(
-                    {
-                        type:'post',
-                        url: urlBase+'/register',
-                        data:JSON.stringify(registerQuery),
-                        contentType: 'application/json',
-                        dataType:'json',
-                        success: function(result) {
-                            console.log(result);
-                        },
-                        error: function() {
-                            console.log("Server Error. Pleasy try again later.");
-                        },
-                        complete: function() {
-                        }
-                    }
-                )
-                //$.post(urlBase+'/register',
-                //    JSON.stringify({ query_name :{aa:"world"}}),
-                //    function(result){
-                //        console.log(result);
-                //},"json")
-
+                norichain.registerQuery(q);
             });
             _.each(diffQueries.removedQueries,function(q){
+                norichain.deregisterQuery(q);
                 console.log(q);
             });
             _.each(diffQueries.updatedQueries,function(q){
+                norichain.deregisterQuery(q.before);
+                norichain.registerQuery(q.after);
                 console.log(q);
             });
-
+            this.fetchQueries();
             //$.post("http://"+this.host+":"+this.port+"/api/queries",jsondata,function(result){console.log(result);})
         },
         forcePushQuery: function(){
@@ -347,6 +392,10 @@ var norichain  = new Vue({
             } else {
                 alert("Failed to load file");
             }
+        },
+        appendLog: function(type,message,time){
+            var time = time || moment().format('YYYY/MM/DD HH:mm:ss');
+            this.logs.push({time:time,type:type,message:message});
         },
         displayQueries: function(queries){
             this.nodes = [];

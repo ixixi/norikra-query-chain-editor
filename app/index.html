@@ -47,26 +47,29 @@
         <h1>{{title | uppercase}}</h1>
         <div class="row">
             <div class="col-md-12" id="api-param" role="form">
-                <label for="host" class="col-md-1 control-label">host</label>
-                <div class="col-md-3">
-                    <input class="form-control" id="host" placeholder="localhost (default)" v-model="host">
-                </div>
-                <label for="port" class="col-md-1 control-label">Port</label>
-                <div class="col-md-2">
-                    <input class="form-control" id="port" placeholder="26578 (default)" v-model="port">
+                <div class="col-md-4">
+                    <label style="float:left;margin-right:4px;">host</label>
+                    <input id="host" class="form-control" style="float:left;width:190px;" placeholder="localhost (default)" v-model="host">
+                    <label style="float:left;margin-left:3px;margin-right:3px;">:</label>
+                    <input id="port" class="form-control" style="float:left;width:70px;" placeholder="26578 (default)" v-model="port">
                 </div>
                 <div class="col-md-5">
                     <button type="button" id="fetch" class="btn">fetch</button>
                     <button type="button" id="merge" class="btn">merge</button>
                     <button type="button" id="commit" class="btn">commit</button>
-                    <button type="button" id="push" class="btn disabled">push</button>
+                    <!--<button type="button" id="push" class="btn disabled">push</button>-->
                     <button type="button" id="push-force" class="btn">push -f</button>
                     <button type="button" id="export" class="btn">export</button>
+                    <button type="button" id="import" class="btn">import</button>
                 </div>
+                <div class="col-md-2" >
+                    <input type="file" id="import-file" name="import-file">
+                </div>
+
             </div>
         </div>
         <div class="row">
-            <div class="col-md-3" >
+            <div class="col-md-2" >
                 <table class="table">
                     <tbody>
                     <tr>
@@ -82,22 +85,33 @@
                         <td>{{localHash}}</td>
                     </tr>
                     <tr>
-                        <td>Last Commit</td>
+                        <td>LastCommit</td>
                         <td>{{committedHash}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-5">
-                <button type="button" id="reset-server" class="btn">reset to server</button>
-                <button type="button" id="reset-edit-origin" class="btn">reset to edit origin</button>
-                <button type="button" id="reset-committed" class="btn">reset to last commit</button>
+            <div class="col-md-1">
+                <div><button type="button" id="reset-server" class="btn reset-btn">reset</button></div>
+                <div><button type="button" id="reset-edit-origin" class="btn reset-btn">reset</button></div>
+                <div><button type="button" id="reset-local" class="btn reset-btn">reset</button></div>
+                <div><button type="button" id="reset-committed" class="btn reset-btn">reset</button></div>
             </div>
-            <div class="col-md-1" >
-                <button type="button" id="import" class="btn">import</button>
-            </div>
-            <div class="col-md-3" >
-                <input type="file" id="import-file" name="import-file">
+            <div class="col-md-8">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th style="width:150px;">time</th>
+                        <th style="width:50px;">type</th>
+                        <th>message</th>
+                    </tr>
+                    <tr v-repeat="log : logs | tail 3" class="logs">
+                        <td>{{log.time}}</td>
+                        <td>{{log.type}}</td>
+                        <td>{{log.message}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="row">
@@ -168,12 +182,12 @@
                         <td>U</td>
                         <td>{{q.before.name}}</td>
                         <td>
-                          <div class="updated-query-before">{{q.before.group}}</div>
-                          <div class="updated-query-after">{{q.after.group}}</div>
+                            <div class="updated-query-before">{{q.before.group}}</div>
+                            <div class="updated-query-after">{{q.after.group}}</div>
                         </td>
                         <td>
-                          <div class="updated-query-before">{{q.before.targets}}</div>
-                          <div class="updated-query-after">{{q.after.targets}}</div>
+                            <div class="updated-query-before">{{q.before.targets}}</div>
+                            <div class="updated-query-after">{{q.after.targets}}</div>
                         </td>
                         <td>
                             <div class="updated-query-before">{{q.before.expression}}</div>
