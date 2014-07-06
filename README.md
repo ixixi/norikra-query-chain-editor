@@ -8,7 +8,7 @@ norikra query-chain editor.(QCE)
 ## Features
 
 * fetch query chain from norikra
-* merge query chain
+* sync query chain
 * visualize LOOPBACK query chain as network graphs
 * edit query chains
 * import/export query chains (json)
@@ -40,6 +40,5 @@ and access here.
 
 ## TODO
 
-* show diff
 * detect conflict
-* push query chains to norikra server
+* merge server query
