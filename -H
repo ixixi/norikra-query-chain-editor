@@ -1,9 +1,0 @@
-HTTP/1.1 400 Bad Request
-Content-Length: 75
-Content-Type: application/json
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: OPTIONS
-Access-Control-Allow-Methods: GET
-Access-Control-Allow-Methods: POST
-X-Content-Type-Options: nosniff
-
