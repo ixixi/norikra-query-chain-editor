@@ -87,8 +87,8 @@ Vue.filter(
     }
 );
 
-var norichain  = new Vue({
-    el: '#norichain',
+var qce  = new Vue({
+    el: '#qce',
 
     ready:function(){
         //this.$watch('selectedQuery1',function(){
@@ -125,10 +125,10 @@ var norichain  = new Vue({
         diffData:{},
         logs: [],
         selectMap : {
-            'Server': function(){return norichain.serverQueries;},
-            'Edit Origin': function(){return norichain.editOriginQueries;},
-            'Local': function(){return norichain.localQueries;},
-            'Last Committed': function(){return norichain.committedQueries;}
+            'Server': function(){return qce.serverQueries;},
+            'Edit Origin': function(){return qce.editOriginQueries;},
+            'Local': function(){return qce.localQueries;},
+            'Last Committed': function(){return qce.committedQueries;}
         }
     },
     methods: {
@@ -162,13 +162,13 @@ var norichain  = new Vue({
 
             function onSelect (properties) {
                 if (properties.nodes.length==1){
-                    selectNode = _.find(norichain.nodes,function(v){return v.id ==properties.nodes[0];});
+                    selectNode = _.find(qce.nodes,function(v){return v.id ==properties.nodes[0];});
                     if (selectNode.group==='query') {
                         $('#editor').show();
-                        norichain.expression = selectNode.expression;
-                        norichain.queryName = selectNode.label;
-                        norichain.queryNameBefore = selectNode.label;
-                        norichain.queryGroup = selectNode.qgroup;
+                        qce.expression = selectNode.expression;
+                        qce.queryName = selectNode.label;
+                        qce.queryNameBefore = selectNode.label;
+                        qce.queryGroup = selectNode.qgroup;
                     }
                 }else{
                     $('#editor').hide();
@@ -211,7 +211,7 @@ var norichain  = new Vue({
             this.editOriginQueries = JSON.parse(localStorage.getItem('savedEditOriginQueries'));
             this.displayQueries(this.localQueries);
             this.updateHash();
-            norichain.loaded = true;
+            qce.loaded = true;
         },
         updateHash: function(){
             this.localHash = this.normalizedHash(this.localQueries);
@@ -220,7 +220,7 @@ var norichain  = new Vue({
             this.editOriginHash = this.normalizedHash(this.editOriginQueries);
         },
         applyEdit: function(){
-            var q = _.find(this.localQueries,function(v){return v.name===norichain.queryNameBefore});
+            var q = _.find(this.localQueries,function(v){return v.name===qce.queryNameBefore});
             q.expression = this.expression;
             q.name = this.queryName;
             q.group = this.queryGroup;
@@ -229,12 +229,12 @@ var norichain  = new Vue({
         },
         fetchQueries: function() {
             $.getJSON("http://"+this.host+":"+this.port+"/api/queries", function (json) {
-                norichain.serverQueries = $.extend(true, [], json);
+                qce.serverQueries = $.extend(true, [], json);
             }).done(function () {
-                norichain.updateHash()
+                qce.updateHash()
             }).fail(function () {
             }) .always(function () {
-                norichain.appendLog(LOG_TYPE.INFO,'fetch queries success.');
+                qce.appendLog(LOG_TYPE.INFO,'fetch queries success.');
             });
         },
         mergeQueries: function(){
@@ -246,13 +246,13 @@ var norichain  = new Vue({
             this.localQueries = $.extend(true, [], this.editOriginQueries);
             this.updateHash();
             this.displayQueries(this.localQueries);
-            norichain.appendLog(LOG_TYPE.INFO,'merge queries success.');
+            qce.appendLog(LOG_TYPE.INFO,'merge queries success.');
         },
         commitQueries: function(){
             this.committedQueries = $.extend(true, [], this.localQueries);
             this.updateHash();
             this.saveQueriesLocalStorage();
-            norichain.appendLog(LOG_TYPE.INFO,'commit queries success.');
+            qce.appendLog(LOG_TYPE.INFO,'commit queries success.');
         },
         pushQueries: function(){
             //TODO: implement
@@ -272,14 +272,14 @@ var norichain  = new Vue({
                     contentType: 'application/json',
                     dataType:'json',
                     success: function(result) {
-                        norichain.appendLog(LOG_TYPE.INFO,'registerQuery: "'+ query.name +'" seccuess.');
+                        qce.appendLog(LOG_TYPE.INFO,'registerQuery: "'+ query.name +'" seccuess.');
                     },
                     error: function(result) {
                         var res = result.responseJSON;
-                        norichain.appendLog(LOG_TYPE.ERROR,'registerQuery: "'+ query.name +'" failed. { ' + res.error +' | '+ res.message +' }' );
+                        qce.appendLog(LOG_TYPE.ERROR,'registerQuery: "'+ query.name +'" failed. { ' + res.error +' | '+ res.message +' }' );
                     },
                     complete: function() {
-                        norichain.fetchQueries();
+                        qce.fetchQueries();
                     }
                 }
             );
@@ -297,14 +297,14 @@ var norichain  = new Vue({
                     contentType: 'application/json',
                     dataType:'json',
                     success: function(result) {
-                        norichain.appendLog(LOG_TYPE.INFO,'deregisterQuery: "'+ query.name +'" seccuess.');
+                        qce.appendLog(LOG_TYPE.INFO,'deregisterQuery: "'+ query.name +'" seccuess.');
                     },
                     error: function(result) {
                         var res = result.responseJSON;
-                        norichain.appendLog(LOG_TYPE.ERROR,'deregisterQuery: "'+ query.name +'" failed. { ' + res.error +' | '+ res.message +' }' );
+                        qce.appendLog(LOG_TYPE.ERROR,'deregisterQuery: "'+ query.name +'" failed. { ' + res.error +' | '+ res.message +' }' );
                     },
                     complete: function() {
-                        norichain.fetchQueries();
+                        qce.fetchQueries();
                     }
                 }
             );
@@ -312,14 +312,14 @@ var norichain  = new Vue({
         forcePushQueries: function(){
             var diffQueries = this.getPushQueries();
             _.each(diffQueries.addedQueries,function(q){
-                norichain.registerQuery(q);
+                qce.registerQuery(q);
             });
             _.each(diffQueries.removedQueries,function(q){
-                norichain.deregisterQuery(q);
+                qce.deregisterQuery(q);
             });
             _.each(diffQueries.updatedQueries,function(q){
-                norichain.deregisterQuery(q.before);
-                norichain.registerQuery(q.after);
+                qce.deregisterQuery(q.before);
+                qce.registerQuery(q.after);
             });
             this.fetchQueries();
         },
@@ -330,23 +330,23 @@ var norichain  = new Vue({
             this.localQueries = $.extend(true, [], this.serverQueries);
             this.editOriginQueries = $.extend(true, [], this.serverQueries);
             this.updateHash();
-            norichain.appendLog(LOG_TYPE.INFO,'reset to Server.');
+            qce.appendLog(LOG_TYPE.INFO,'reset to Server.');
         },
         resetToEditOrigin: function(){
             this.localQueries = $.extend(true, [], this.editOriginQueries);
             this.updateHash();
-            norichain.appendLog(LOG_TYPE.INFO,'reset to edit origin.');
+            qce.appendLog(LOG_TYPE.INFO,'reset to edit origin.');
         },
         resetToCommitted: function(){
             this.localQueries = $.extend(true, [], this.committedQueries);
             this.updateHash();
-            norichain.appendLog(LOG_TYPE.INFO,'reset to last commit.');
+            qce.appendLog(LOG_TYPE.INFO,'reset to last commit.');
         },
         exportQueries: function(){
             var uriContent = "data:application/octet-stream," + encodeURIComponent(JSON.stringify(this.localQueries,undefined,4));
             var myWindow = window.open(uriContent, "NorikraQueryChain");
             myWindow.focus();
-            norichain.appendLog(LOG_TYPE.INFO,'export queries.');
+            qce.appendLog(LOG_TYPE.INFO,'export queries.');
         },
         importQueries: function(){
             var f = $('#import-file').prop('files')[0];
@@ -354,15 +354,15 @@ var norichain  = new Vue({
                 var r = new FileReader();
                 r.onload = function(e) {
                     var contents = e.target.result;
-                    norichain.localQueries = JSON.parse(contents);
-                    norichain.updateHash();
-                    norichain.displayQueries(norichain.localQueries);
+                    qce.localQueries = JSON.parse(contents);
+                    qce.updateHash();
+                    qce.displayQueries(qce.localQueries);
                 }
                 r.readAsText(f)
             } else {
                 alert("Failed to load file");
             }
-            norichain.appendLog(LOG_TYPE.INFO,'import queries.');
+            qce.appendLog(LOG_TYPE.INFO,'import queries.');
         },
         appendLog: function(type,message,time){
             var time = time || moment().format('YYYY/MM/DD HH:mm:ss');
@@ -372,7 +372,7 @@ var norichain  = new Vue({
             this.nodes = [];
             this.edges = [];
             var findNodeId = function (label) {
-                return _.find(norichain.nodes, function (v) {
+                return _.find(qce.nodes, function (v) {
                     return v.label == label;
                 }).id;
             };
@@ -410,10 +410,10 @@ var norichain  = new Vue({
 
             _.each(queries, function (d) {
                 _.each(d.targets, function (v) {
-                    norichain.edges.push({from: findNodeId(v), to: findNodeId(d.name), name: v, length: setting.GRAPH_PARAM.QUERY_TARGET_LENGTH});
+                    qce.edges.push({from: findNodeId(v), to: findNodeId(d.name), name: v, length: setting.GRAPH_PARAM.QUERY_TARGET_LENGTH});
                 })
                 if (loopback(d)) {
-                    norichain.edges.push({from: findNodeId(d.name), to: findNodeId(loopback(d)), length: setting.GRAPH_PARAM.QUERY_LOOPBACK_LENGTH});
+                    qce.edges.push({from: findNodeId(d.name), to: findNodeId(loopback(d)), length: setting.GRAPH_PARAM.QUERY_LOOPBACK_LENGTH});
                 }
             });
 
@@ -433,7 +433,7 @@ var norichain  = new Vue({
                 });
 
             _.each(inputTargets, function (t) {
-                norichain.edges.push({from: 0, to: findNodeId(t), label: 'input', groups: 'input', length: setting.GRAPH_PARAM.INPUT_LENGTH});
+                qce.edges.push({from: 0, to: findNodeId(t), label: 'input', groups: 'input', length: setting.GRAPH_PARAM.INPUT_LENGTH});
             });
             this.draw();
         }
@@ -446,44 +446,44 @@ var norichain  = new Vue({
 
 $(document).ready(function () {
     $("#fetch").click(function () {
-        norichain.fetchQueries();
+        qce.fetchQueries();
     });
     $("#merge").click(function () {
-        norichain.mergeQueries();
+        qce.mergeQueries();
     });
     $("#commit").click(function () {
-        norichain.commitQueries();
+        qce.commitQueries();
     });
     $("#push").click(function () {
-        norichain.pushQueries();
+        qce.pushQueries();
     });
     $("#push-force").click(function () {
-        norichain.forcePushQueries();
+        qce.forcePushQueries();
     });
     $("#import").click(function () {
-        norichain.importQueries();
+        qce.importQueries();
     });
     $("#export").click(function () {
-        norichain.exportQueries();
+        qce.exportQueries();
     });
     $("#apply").click(function () {
-        norichain.applyEdit();
+        qce.applyEdit();
     });
     $("#reset-server").click(function () {
-        norichain.resetToServer();
+        qce.resetToServer();
     });
     $("#reset-edit-origin").click(function () {
-        norichain.resetToEditOrigin();
+        qce.resetToEditOrigin();
     });
     $("#reset-committed").click(function () {
-        norichain.resetToCommitted();
+        qce.resetToCommitted();
     });
     $("#show-diff").click(function () {
-        norichain.showDiff();
+        qce.showDiff();
     });
 });
 
 $(function(){
-    norichain.loadQueriesLocalStorage();
-    norichain.fetchQueries();
+    qce.loadQueriesLocalStorage();
+    qce.fetchQueries();
 });
