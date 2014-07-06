@@ -1,4 +1,6 @@
-var SHA1 = new Hashes.SHA1;
+'use strict';
+
+var SHA1 = new Hashes.SHA1();
 
 var setting = {
     GRAPH_PARAM: {
@@ -78,8 +80,8 @@ var LOG_TYPE = {
 
 Vue.filter(
     'jsonStringify',function(val){
-    return JSON.stringify(val);
-});
+        return JSON.stringify(val);
+    });
 
 Vue.filter(
     'tail', function(arr,num){
@@ -133,7 +135,7 @@ var qce  = new Vue({
     },
     methods: {
         getPushQueries: function(){
-            var diffData = this.diff(this.selectMap['Server'](),this.selectMap['Last Committed']())
+            var diffData = this.diff(this.selectMap['Server'](),this.selectMap['Last Committed']());
             return diffData;
         },
         showDiff: function(){
@@ -146,7 +148,7 @@ var qce  = new Vue({
             this.diffView = JSON.stringify(this.diffData,null,4);
         },
         normalizedHash: function(rawQueries) {
-            if (rawQueries == null) {
+            if (rawQueries === null) {
                 return '';
             }
             var sortedQueries = _.sortBy(rawQueries, function (q) {
@@ -161,8 +163,8 @@ var qce  = new Vue({
                 setting.GRAPH_OPTIONS);
 
             function onSelect (properties) {
-                if (properties.nodes.length==1){
-                    selectNode = _.find(qce.nodes,function(v){return v.id ==properties.nodes[0];});
+                if (properties.nodes.length===1){
+                    var selectNode = _.find(qce.nodes,function(v){return v.id === properties.nodes[0];});
                     if (selectNode.group==='query') {
                         $('#editor').show();
                         qce.expression = selectNode.expression;
@@ -183,12 +185,12 @@ var qce  = new Vue({
         diff: function(queries1,queries2){
             var addedQueries = _.filter(queries2,function(q2){
                 return _.find(queries1,function(q1){
-                    return q2.name==q1.name;})===undefined ;});
+                    return q2.name===q1.name;})===undefined ;});
             var removedQueries = _.filter(queries1,function(q1){
                 return _.find(queries2,function(q2){
-                    return q1.name==q2.name;})===undefined ;});
+                    return q1.name===q2.name;})===undefined ;});
             var commonQueries = _.reject(_.map(queries1,function(q1){
-                    return {before:q1,after: _.find(queries2,function(q2){return q1.name===q2.name;})}}),
+                    return {before:q1,after: _.find(queries2,function(q2){return q1.name===q2.name;})};}),
                 function(d){return d.after===undefined;});
 
             var updatedQueries = _.filter(commonQueries,function(cq){
@@ -228,10 +230,10 @@ var qce  = new Vue({
             this.displayQueries(this.localQueries);
         },
         fetchQueries: function() {
-            $.getJSON("http://"+this.host+":"+this.port+"/api/queries", function (json) {
+            $.getJSON('http://'+this.host+':'+this.port+'/api/queries', function (json) {
                 qce.serverQueries = $.extend(true, [], json);
             }).done(function () {
-                qce.updateHash()
+                qce.updateHash();
             }).fail(function () {
             }) .always(function () {
                 qce.appendLog(LOG_TYPE.INFO,'fetch queries success.');
@@ -343,8 +345,8 @@ var qce  = new Vue({
             qce.appendLog(LOG_TYPE.INFO,'reset to last commit.');
         },
         exportQueries: function(){
-            var uriContent = "data:application/octet-stream," + encodeURIComponent(JSON.stringify(this.localQueries,undefined,4));
-            var myWindow = window.open(uriContent, "NorikraQueryChain");
+            var uriContent = 'data:application/octet-stream,' + encodeURIComponent(JSON.stringify(this.localQueries,undefined,4));
+            var myWindow = window.open(uriContent, 'NorikraQueryChain');
             myWindow.focus();
             qce.appendLog(LOG_TYPE.INFO,'export queries.');
         },
@@ -357,23 +359,23 @@ var qce  = new Vue({
                     qce.localQueries = JSON.parse(contents);
                     qce.updateHash();
                     qce.displayQueries(qce.localQueries);
-                }
-                r.readAsText(f)
+                };
+                r.readAsText(f);
             } else {
-                alert("Failed to load file");
+                alert('Failed to load file');
             }
             qce.appendLog(LOG_TYPE.INFO,'import queries.');
         },
         appendLog: function(type,message,time){
-            var time = time || moment().format('YYYY/MM/DD HH:mm:ss');
-            this.logs.push({time:time,type:type,message:message});
+            var logTime = time || moment().format('YYYY/MM/DD HH:mm:ss');
+            this.logs.push({time:logTime,type:type,message:message});
         },
         displayQueries: function(queries){
             this.nodes = [];
             this.edges = [];
             var findNodeId = function (label) {
                 return _.find(qce.nodes, function (v) {
-                    return v.label == label;
+                    return v.label === label;
                 }).id;
             };
 
@@ -411,7 +413,7 @@ var qce  = new Vue({
             _.each(queries, function (d) {
                 _.each(d.targets, function (v) {
                     qce.edges.push({from: findNodeId(v), to: findNodeId(d.name), name: v, length: setting.GRAPH_PARAM.QUERY_TARGET_LENGTH});
-                })
+                });
                 if (loopback(d)) {
                     qce.edges.push({from: findNodeId(d.name), to: findNodeId(loopback(d)), length: setting.GRAPH_PARAM.QUERY_LOOPBACK_LENGTH});
                 }
@@ -421,7 +423,7 @@ var qce  = new Vue({
             var loopbackTargets = _.filter(_.map(queries, function (d) {
                 return loopback(d);
             }), function (v) {
-                return v != null
+                return v !== null;
             });
 
 
@@ -445,40 +447,40 @@ var qce  = new Vue({
 
 
 $(document).ready(function () {
-    $("#fetch").click(function () {
+    $('#fetch').click(function () {
         qce.fetchQueries();
     });
-    $("#merge").click(function () {
+    $('#merge').click(function () {
         qce.mergeQueries();
     });
-    $("#commit").click(function () {
+    $('#commit').click(function () {
         qce.commitQueries();
     });
-    $("#push").click(function () {
+    $('#push').click(function () {
         qce.pushQueries();
     });
-    $("#push-force").click(function () {
+    $('#push-force').click(function () {
         qce.forcePushQueries();
     });
-    $("#import").click(function () {
+    $('#import').click(function () {
         qce.importQueries();
     });
-    $("#export").click(function () {
+    $('#export').click(function () {
         qce.exportQueries();
     });
-    $("#apply").click(function () {
+    $('#apply').click(function () {
         qce.applyEdit();
     });
-    $("#reset-server").click(function () {
+    $('#reset-server').click(function () {
         qce.resetToServer();
     });
-    $("#reset-edit-origin").click(function () {
+    $('#reset-edit-origin').click(function () {
         qce.resetToEditOrigin();
     });
-    $("#reset-committed").click(function () {
+    $('#reset-committed').click(function () {
         qce.resetToCommitted();
     });
-    $("#show-diff").click(function () {
+    $('#show-diff').click(function () {
         qce.showDiff();
     });
 });
