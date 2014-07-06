@@ -23,14 +23,14 @@ $ npm install
 $ bower install
 ```
 
-QCE uses Norikra REST APIs. To use QCE, Norikra have to allow CORS requests or QCE server is on same origin.
+QCE uses Norikra REST APIs. To use QCE, Norikra have to allow CORS requests or QCE server have to be mounted on the same origin.
 
-* add CORS header
-https://github.com/ixixi/norikra/commit/acac6290889e3cdb7895ee5dd1f6de35667406d7
+* allow CORS requests
+https://github.com/ixixi/norikra/commit/2a847f5cb3080561a7af419036ee6568be5c400f
 
 and run qce. `$ grunt server`
 
-* mount as same origin
+* or mount QCE on the same origin
 
 ```bash
 ln -s /path/to/norikra-query-chain-editor /path/to/norikra/public/qce

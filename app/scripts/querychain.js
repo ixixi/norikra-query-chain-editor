@@ -284,14 +284,7 @@ var norichain  = new Vue({
                         url: urlBase+'/register',
                         data:JSON.stringify(registerQuery),
                         contentType: 'application/json',
-                        //contentType: 'application/JSON',
-                        headers: {
-                            //'Content-Type': 'application/json'
-                            'aaa': 'bbb'
-                        },
                         dataType:'json',
-                        crossDomain: true,
-
                         success: function(result) {
                             console.log(result);
                         },
