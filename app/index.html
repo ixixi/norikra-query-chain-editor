@@ -9,7 +9,6 @@
     <!-- build:css styles/vendor.css -->
     <link rel="stylesheet" href="../bower_components/nvd3/nv.d3.min.css">
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/nvd3/src/nv.d3.css" />
@@ -20,15 +19,6 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
     <style type="text/css">
-        body {
-            font: 10pt arial;
-        }
-        #query-chain {
-            width: 900px;
-            height: 600px;
-            border: 1px solid lightgray;
-        }
-
         .row {
             margin-top:5px;
             margin-bottom:5px;
@@ -69,7 +59,7 @@
                     <button type="button" id="fetch" class="btn">fetch</button>
                     <button type="button" id="merge" class="btn">merge</button>
                     <button type="button" id="commit" class="btn">commit</button>
-                    <button type="button" id="push" class="btn">push</button>
+                    <button type="button" id="push" class="btn disabled">push</button>
                     <button type="button" id="push-force" class="btn">push -f</button>
                     <button type="button" id="export" class="btn">export</button>
                 </div>
@@ -77,10 +67,26 @@
         </div>
         <div class="row">
             <div class="col-md-3" >
-                <p>Server hash  : {{serverHash}}</p>
-                <p>EditOrigin hash : {{editOriginHash}}</p>
-                <p>Local hash  : {{localHash}}</p>
-                <p>Committed hash : {{committedHash}}</p>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>Server</td>
+                        <td>{{serverHash}}</td>
+                    </tr>
+                    <tr>
+                        <td>EditOrigin</td>
+                        <td>{{editOriginHash}}</td>
+                    </tr>
+                    <tr>
+                        <td>Local</td>
+                        <td>{{localHash}}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Commit</td>
+                        <td>{{committedHash}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="col-md-5">
                 <button type="button" id="reset-server" class="btn">reset to server</button>
@@ -123,38 +129,59 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <h1>Diff</h1>
+        <div id="diff" class="row">
             <div class="col-md-12">
-                <p>diff</p>
                 <select v-model="selectedQuery1">
                     <option>Server</option>
                     <option>Edit Origin</option>
                     <option>Local</option>
                     <option>Last Committed</option>
                 </select>
-                {{selectedQuery1}}
+                >
+                <!--{{selectedQuery1}}-->
                 <select v-model="selectedQuery2">
                     <option>Server</option>
                     <option>Edit Origin</option>
                     <option>Local</option>
                     <option>Last Committed</option>
                 </select>
-                {{selectedQuery2}}
-                <div>{{diffView}}</div>
-                <div class="row">
-                    <div class="col-md-7" >
-                        <div id="diff-origin-server">
-                            <div id="diff-origin-server-added">{{diffOriginServerAdded}}</div>
-                            <div id="diff-origin-server-removed">{{diffOriginServerRemoved}}</div>
-                            <div id="diff-origin-server-updated">{{diffOriginServerUpdated}}</div>
-                        </div>
-                        <div id="diff-origin-committed">
-                            <div id="diff-origin-committed-added">{{diffOriginCommittedAddedd}}</div>
-                            <div id="diff-origin-committed-removed">{{diffOriginCommittedRemoved}}</div>
-                            <div id="diff-origin-committed-updated">{{diffOriginCommittedUpdated}}</div>
-                        </div>
-                    </div>
-                </div>
+                <!--{{selectedQuery2}}-->
+                <button type="button" class="btn" id="show-diff">show-diff</button>
+                <table class="table">
+                    <tbody>
+                    <tr v-repeat="q : diffData.addedQueries" class="added-query">
+                        <td>+</td>
+                        <td>{{q.name}}</td>
+                        <td>{{q.group}}</td>
+                        <td>{{q.targets}}</td>
+                        <td>{{q.expression}}</td>
+                    </tr>
+                    <tr v-repeat="q : diffData.removedQueries" class="removed-query">
+                        <td>-</td>
+                        <td>{{q.name}}</td>
+                        <td>{{q.group}}</td>
+                        <td>{{q.targets}}</td>
+                        <td>{{q.expression}}</td>
+                    </tr>
+                    <tr v-repeat="q : diffData.updatedQueries" class="updated-query">
+                        <td>U</td>
+                        <td>{{q.before.name}}</td>
+                        <td>
+                          <div class="updated-query-before">{{q.before.group}}</div>
+                          <div class="updated-query-after">{{q.after.group}}</div>
+                        </td>
+                        <td>
+                          <div class="updated-query-before">{{q.before.targets}}</div>
+                          <div class="updated-query-after">{{q.after.targets}}</div>
+                        </td>
+                        <td>
+                            <div class="updated-query-before">{{q.before.expression}}</div>
+                            <div class="updated-query-after">{{q.after.expression}}</div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

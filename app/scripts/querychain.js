@@ -70,18 +70,24 @@ var setting = {
     }
 };
 
+Vue.filter('jsonStringify',function(val){
+    console.log('stringify');
+    console.log(JSON.stringify(val));
+    return JSON.stringify(val);
+});
+
 var norichain  = new Vue({
     el: '#norichain',
 
     ready:function(){
-        this.$watch('selectedQuery1',function(){
-            console.log('selected:'+this.selectedQuery1)
-            this.showDiff();
-        }),
-            this.$watch('selectedQuery2',function(){
-                console.log('selected2:'+this.selectedQuery2);
-                this.showDiff();
-            })
+        //this.$watch('selectedQuery1',function(){
+        //    console.log('selected:'+this.selectedQuery1)
+        //    this.showDiff();
+        //}),
+        //    this.$watch('selectedQuery2',function(){
+        //        console.log('selected2:'+this.selectedQuery2);
+        //        this.showDiff();
+        //     })
     },
     data: {
         title: 'Norikra query chain editor',
@@ -98,13 +104,14 @@ var norichain  = new Vue({
         serverHash: '',
         editOriginHash: '',
         committedHash: '',
-        selectedQuery1:null,
-        selectedQuery2:null,
+        selectedQuery1: 'Server',
+        selectedQuery2: 'Last Committed',
         serverQueries: [],
         editOriginQueries: [],
         localQueries: [],
         committedQueries: [],
         diffView: '',
+        diffData:{},
         selectMap : {
             'Server': function(){return norichain.serverQueries;},
             'Edit Origin': function(){return norichain.editOriginQueries;},
@@ -113,15 +120,21 @@ var norichain  = new Vue({
         }
     },
     methods: {
+        getPushQueries: function(){
+            console.log(this.selectMap['Server']);
+            console.log(this.selectMap['Last Committed']);
+            var diffData = this.diff(this.selectMap['Server'](),this.selectMap['Last Committed']())
+            console.log(diffData);
+            return diffData;
+        },
         showDiff: function(){
             if (!(this.selectedQuery1&&this.selectedQuery2)){
                 return;
             }
             var from = this.selectMap[this.selectedQuery1]();
             var to = this.selectMap[this.selectedQuery2]();
-            var diffData = this.diff(from,to);
-            console.log(diffData);
-            this.diffView = JSON.stringify(diffData);
+            this.diffData = this.diff(from,to);
+            this.diffView = JSON.stringify(this.diffData,null,4);
         },
         normalizedHash: function(rawQueries) {
             console.log('normalizedHash');
@@ -253,6 +266,55 @@ var norichain  = new Vue({
         pushQueries: function(){
             //TODO: implement
         },
+        forcePushQueries: function(){
+            console.log('force-push');
+            var diffQueries = this.getPushQueries();
+            console.log(diffQueries);
+            var urlBase = 'http://'+this.host+':'+this.port+'/api';
+            _.each(diffQueries.addedQueries,function(q){
+                var registerQuery = {
+                    query_name : q.name,
+                    query_group : q.group,
+                    expression : q.expression
+                };
+                console.log(registerQuery);
+                $.ajax(
+                    {
+                        type:'post',
+                        url: urlBase+'/register',
+                        data:JSON.stringify(registerQuery),
+                        contentType: 'application/json',
+                        dataType:'json',
+                        success: function(result) {
+                            console.log(result);
+                        },
+                        error: function() {
+                            console.log("Server Error. Pleasy try again later.");
+                        },
+                        complete: function() {
+                        }
+                    }
+                )
+                //$.post(urlBase+'/register',
+                //    JSON.stringify({ query_name :{aa:"world"}}),
+                //    function(result){
+                //        console.log(result);
+                //},"json")
+
+            });
+            _.each(diffQueries.removedQueries,function(q){
+                console.log(q);
+            });
+            _.each(diffQueries.updatedQueries,function(q){
+                console.log(q);
+            });
+
+            //$.post("http://"+this.host+":"+this.port+"/api/queries",jsondata,function(result){console.log(result);})
+        },
+        forcePushQuery: function(){
+
+            //$.post("http://"+this.host+":"+this.port+"/api/queries",jsondata,function(result){console.log(result);})
+        },
         resetToServer: function(){
             this.localQueries = $.extend(true, [], this.serverQueries);
             this.editOriginQueries = $.extend(true, [], this.serverQueries);
@@ -375,6 +437,9 @@ $(document).ready(function () {
     $("#push").click(function () {
         norichain.pushQueries();
     });
+    $("#push-force").click(function () {
+        norichain.forcePushQueries();
+    });
     $("#import").click(function () {
         norichain.importQueries();
     });
@@ -393,9 +458,12 @@ $(document).ready(function () {
     $("#reset-committed").click(function () {
         norichain.resetToCommitted();
     });
+    $("#show-diff").click(function () {
+        norichain.showDiff();
+    });
 });
 
-console.log(norichain.serverQueries);
-
-norichain.loadQueriesLocalStorage();
-
+$(function(){
+    norichain.loadQueriesLocalStorage();
+    norichain.fetchQueries();
+});

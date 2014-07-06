@@ -3,7 +3,7 @@ norikra-query-chain-editor (QCE)
 
 norikra query-chain editor.(QCE)
 
-![norikra qce screenshot](https://gist.githubusercontent.com/ixixi/aa8a47ba6252230fccd2/raw/6bb35c75e64cfa29220782eef3d0f32974194d37/screenshot.png)
+![norikra qce screenshot](https://gist.githubusercontent.com/ixixi/aa8a47ba6252230fccd2/raw/575f97918ecc4bd48c88afedf0f56e75180e6028/screenshot.png)
 
 
 ## Features
@@ -23,14 +23,14 @@ $ npm install
 $ bower install
 ```
 
-QCE uses Norikra REST APIs. To use QCE, Norikra have to allow CORS requests or QCE server is on same origin.
+QCE uses Norikra REST APIs. To use QCE, Norikra have to allow CORS requests or QCE server have to be mounted on the same origin.
 
-* add CORS header
-https://github.com/ixixi/norikra/commit/acac6290889e3cdb7895ee5dd1f6de35667406d7
+* allow CORS requests
+https://github.com/ixixi/norikra/commit/2a847f5cb3080561a7af419036ee6568be5c400f
 
 and run qce. `$ grunt server`
 
-* mount as same origin
+* or mount QCE on the same origin
 
 ```bash
 ln -s /path/to/norikra-query-chain-editor /path/to/norikra/public/qce
