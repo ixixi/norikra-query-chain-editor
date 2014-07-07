@@ -1,151 +1,151 @@
 body {
-    width: 100%;
-    height: 100%;
-    font-family:'Lucida Grande', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, 'メイリオ', sans-serif;
-    color:#FFF ;
-    background:url('../images/bg2.jpg');
-    font-size:15px;
+  width: 100%;
+  height: 100%;
+  font-family:'Lucida Grande', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, 'メイリオ', sans-serif;
+  color:#FFF ;
+  background: url(../images/bg.jpg);
+  font-size:15px;
 }
 
 #query-chain {
-    width: 100%;
-    height: 600px;
-    border: 1px solid lightgray;
+  width: 100%;
+  height: 600px;
+  border: 1px solid lightgray;
 }
 
 .added-query{
-    color:#cee4ae;
-    background-color: rgba(0,85,46,0.4);
+  color:#cee4ae;
+  background-color: rgba(0,85,46,0.4);
 }
 .removed-query{
-    color:#640125;
-    background-color: rgba(238,187,203,0.6);
+  color:#640125;
+  background-color: rgba(238,187,203,0.6);
 }
 .updated-query{
-    color:#bbc8e6;
-    background-color: rgba(23,24,75,0.4);
+  color:#bbc8e6;
+  background-color: rgba(23,24,75,0.4);
 }
 
 .updated-query-before{
-    color:#d6e9ca;
+  color:#d6e9ca;
 }
 
 .updated-query-after{
-    color:#ffd900;
+  color:#ffd900;
 }
 
 .btn {
-    background: #ee827c;
+  background: #ee827c;
 }
 
 
 .btn:hover {
-    background: #f6bfbc;
+  background: #f6bfbc;
 }
 
 .reset-btn {
-    margin-top: 3px;
+  margin-top: 3px;
 }
 
 .hero-unit {
-    margin: 50px auto 0 auto;
-    width: 300px;
-    font-size: 18px;
-    font-weight: 200;
-    line-height: 30px;
-    background-color: #eee;
-    border-radius: 6px;
-    padding: 60px;
+  margin: 50px auto 0 auto;
+  width: 300px;
+  font-size: 18px;
+  font-weight: 200;
+  line-height: 30px;
+  background-color: #eee;
+  border-radius: 6px;
+  padding: 60px;
 }
 
 .hero-unit h1 {
-    font-size: 60px;
-    line-height: 1;
-    letter-spacing: -1px;
+  font-size: 60px;
+  line-height: 1;
+  letter-spacing: -1px;
 }
 
 .browsehappy {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
 }
 
 #area-chart{
-    background-color:rgba(0,0,0,0.4);
-    padding: 10px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+  background-color:rgba(0,0,0,0.4);
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 #area-chart svg{
-    height:300px;
+  height:300px;
 }
 
 #donut-chart{
-    position: absolute;
-    background-color:rgba(0,0,0,0.4);
-    padding-top:20px;
-    padding-left:0px;
-    padding-bottom:40px;
+  position: absolute;
+  background-color:rgba(0,0,0,0.4);
+  padding-top:20px;
+  padding-left:0px;
+  padding-bottom:40px;
 }
 
 #donut-chart svg {
-    height: 400px;
-    width:350px;
-    font-size:10px;
+  height: 400px;
+  width:350px;
+  font-size:10px;
 }
 
 
 svg text {
-    font-size:15px;
-    font-family:'Lucida Grande', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, 'メイリオ', sans-serif;
-    fill     : #FFFFFF;
+  font-size:15px;
+  font-family:'Lucida Grande', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, 'メイリオ', sans-serif;
+  fill     : #FFFFFF;
 }
 
 .nvtooltip {
-    background-color: rgba(0,0,0,0.5);
-    color:white;
+  background-color: rgba(0,0,0,0.5);
+  color:white;
 }
 
 .table {
-    background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0,0,0,0.4);
 }
 
 .animated {
-    display: inline-block;
+  display: inline-block;
 }
 
 .animated.v-enter {
-    animation: fadein .5s;
+  animation: fadein .5s;
 }
 
 .animated.v-leave {
-    animation: fadeout .5s;
+  animation: fadeout .5s;
 }
 
 @keyframes fadein {
-    0% {
-        transform: scale(0);
-    }
-    50% {
-        transform: scale(1.5);
-    }
-    100% {
-        transform: scale(1);
-    }
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeout {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.5);
-    }
-    100% {
-        transform: scale(0);
-    }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(0);
+  }
 }
 
 
@@ -156,229 +156,229 @@ svg text {
 
 
 div, span, p, td {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 #content {
-    width: 1200px;
+  width: 1200px;
 }
 #chart {
-    width:720px;
-    display: inline-block;
-    background: rgba(0,0,0,0.6);
+  width:720px;
+  display: inline-block;
+  background: rgba(0,0,0,0.6);
 }
 #chart path {
-    -webkit-transition: opacity 0.2s linear;
+  -webkit-transition: opacity 0.2s linear;
 }
 #preview {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 #mood_preview {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 #legend {
-    display: inline-block;
-    position: relative;
-    left: 8px;
+  display: inline-block;
+  position: relative;
+  left: 8px;
 }
 #legend_container {
-    position: absolute;
-    right: 0;
-    bottom: 26px;
-    width: 0;
+  position: absolute;
+  right: 0;
+  bottom: 26px;
+  width: 0;
 }
 #chart_container {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 
 #mood_chart_container {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
 #smoother {
-    margin: 0 0 10px 16px;
-    width: 100px;
+  margin: 0 0 10px 16px;
+  width: 100px;
 }
 .rickshaw_graph .detail {
-    color:white;
-    left: -1000;
+  color:white;
+  left: -1000;
 }
 .rickshaw_graph .detail .x_label {
-    background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.6);
 }
 
 
 .rickshaw_graph .x_tick.glow .title, .rickshaw_graph .y_ticks.glow text{
-    color:white;
-    text-shadow:
-        -1px 1px 0 rgba(0, 0, 0, 0.4),
-        1px -1px 0 rgba(0, 0, 0, 0.4),
-        1px 1px 0 rgba(0, 0, 0, 0.4),
-        0px 1px 0 rgba(0, 0, 0, 0.4),
-        0px -1px 0 rgba(0, 0, 0, 0.4),
-        1px 0px 0 rgba(0, 0, 0, 0.4),
-        -1px 0px 0 rgba(0, 0, 0, 0.4),
-        -1px -1px 0 rgba(0, 0, 0, 0.4);
+  color:white;
+  text-shadow:
+  -1px 1px 0 rgba(0, 0, 0, 0.4),
+  1px -1px 0 rgba(0, 0, 0, 0.4),
+  1px 1px 0 rgba(0, 0, 0, 0.4),
+  0px 1px 0 rgba(0, 0, 0, 0.4),
+  0px -1px 0 rgba(0, 0, 0, 0.4),
+  1px 0px 0 rgba(0, 0, 0, 0.4),
+  -1px 0px 0 rgba(0, 0, 0, 0.4),
+  -1px -1px 0 rgba(0, 0, 0, 0.4);
 }
 .rickshaw_graph .x_tick.glow .title, .rickshaw_graph .y_ticks.glow text{
-    color:white;
-    text-shadow:
-        -1px 1px 0 rgba(0, 0, 0, 0.4),
-        1px -1px 0 rgba(0, 0, 0, 0.4),
-        1px 1px 0 rgba(0, 0, 0, 0.4),
-        0px 1px 0 rgba(0, 0, 0, 0.4),
-        0px -1px 0 rgba(0, 0, 0, 0.4),
-        1px 0px 0 rgba(0, 0, 0, 0.4),
-        -1px 0px 0 rgba(0, 0, 0, 0.4),
-        -1px -1px 0 rgba(0, 0, 0, 0.4);
+  color:white;
+  text-shadow:
+  -1px 1px 0 rgba(0, 0, 0, 0.4),
+  1px -1px 0 rgba(0, 0, 0, 0.4),
+  1px 1px 0 rgba(0, 0, 0, 0.4),
+  0px 1px 0 rgba(0, 0, 0, 0.4),
+  0px -1px 0 rgba(0, 0, 0, 0.4),
+  1px 0px 0 rgba(0, 0, 0, 0.4),
+  -1px 0px 0 rgba(0, 0, 0, 0.4),
+  -1px -1px 0 rgba(0, 0, 0, 0.4);
 }
 .rickshaw_graph .x_tick.glow .title, .rickshaw_graph .y_ticks.glow text{
 
 }
 #chart {
-    border: 1px solid #f0f0f0;
+  border: 1px solid #f0f0f0;
 }
 #side_panel {
-    padding: 0 20px 20px 0;
-    width: 240px;
-    display: inline-block;
-    vertical-align: top;
+  padding: 0 20px 20px 0;
+  width: 240px;
+  display: inline-block;
+  vertical-align: top;
 }
 #side_panel section {
-    color: #505050;
-    font-size: 12px;
+  color: #505050;
+  font-size: 12px;
 }
 #side_panel section h6 {
-    margin: 0 0 1em 0;
-    font-size: 12px;
-    font-weight: normal;
+  margin: 0 0 1em 0;
+  font-size: 12px;
+  font-weight: normal;
 }
 #side_panel .ui-slider-horizontal {
-    height: 1px !important;
-    border-color: #e0e0e0;
-    margin-bottom: 10px;
+  height: 1px !important;
+  border-color: #e0e0e0;
+  margin-bottom: 10px;
 }
 #side_panel .ui-slider-handle {
-    border-color: #a0a0a0;
-    height: 9px !important;
-    width: 9px !important;
-    top: -5px !important;
-    border-radius: 6px;
-    outline: none;
-    cursor: pointer;
+  border-color: #a0a0a0;
+  height: 9px !important;
+  width: 9px !important;
+  top: -5px !important;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
 }
 #legend {
-    background: rgba(0,0,0,0.2);
-    margin-left: 0;
-    padding: 0;
-    left: 0;
+  background: rgba(0,0,0,0.2);
+  margin-left: 0;
+  padding: 0;
+  left: 0;
 }
 #legend .label {
-    color:white;
+  color:white;
 }
 #legend .action {
-    color: #00EEDD;
-    opacity: 0.5;
+  color: #00EEDD;
+  opacity: 0.5;
 }
 #legend ul {
-    padding: 0;
+  padding: 0;
 }
 h1 {
-    font-family: Franklin Gothic Medium, UnDotum, Helvetica, Arial;
-    font-weight: normal;
-    font-size: 20px;
+  font-family: Franklin Gothic Medium, UnDotum, Helvetica, Arial;
+  font-weight: normal;
+  font-size: 20px;
 }
 section {
-    border: none;
-    border-top: 1px solid #eaeaea;
-    padding: 15px 0;
+  border: none;
+  border-top: 1px solid #eaeaea;
+  padding: 15px 0;
 }
 #smoother {
-    margin: 5px 0 0 10px;
-    width: 90%;
+  margin: 5px 0 0 10px;
+  width: 90%;
 }
 label.disabled {
-    opacity: 0.4;
+  opacity: 0.4;
 }
 #renderer_form.toggler {
-    display: block;
-    margin: 0;
+  display: block;
+  margin: 0;
 }
 #renderer_form.toggler input[type=radio]:checked {
-    outline: 2px solid steelblue;
+  outline: 2px solid steelblue;
 }
 #renderer_form.toggler input[type=radio] {
-    -moz-appearance: button;
-    background: white;
-    margin: 0 7px;
-    width: 39px;
-    height: 26px;
-    position: absolute;
+  -moz-appearance: button;
+  background: white;
+  margin: 0 7px;
+  width: 39px;
+  height: 26px;
+  position: absolute;
 }
 #renderer_form.toggler label {
-    display: inline-block;
-    padding: 0;
-    width: 39px;
-    padding-top: 27px;
-    text-align: center;
-    font-size: 10px;
-    color: #808080;
-    background-repeat: no-repeat;
-    position: relative;
-    margin: 0 7px;
-    cursor: pointer;
+  display: inline-block;
+  padding: 0;
+  width: 39px;
+  padding-top: 27px;
+  text-align: center;
+  font-size: 10px;
+  color: #808080;
+  background-repeat: no-repeat;
+  position: relative;
+  margin: 0 7px;
+  cursor: pointer;
 }
 #interpolation_form,
 #offset_form {
-    vertical-align: top;
-    display: inline-block;
-    width: 45%;
+  vertical-align: top;
+  display: inline-block;
+  width: 45%;
 }
 #interpolation_form label,
 #offset_form label {
-    display: block;
+  display: block;
 }
 label[for=area] {
-    background: url(../images/om_stack.png);
+  background: url(../images/om_stack.png);
 }
 label[for=line] {
-    background: url(../images/om_lines.png);
+  background: url(../images/om_lines.png);
 }
 label[for=bar] {
-    background: url(../images/om_bar.png);
+  background: url(../images/om_bar.png);
 }
 label[for=scatter] {
-    background: url(../images/om_scatter.png);
+  background: url(../images/om_scatter.png);
 }
 #offset_form label,
 #interpolation_form label {
-    background-repeat: no-repeat;
-    background-position: 2em center;
-    cursor: pointer;
-    cursor: hand;
+  background-repeat: no-repeat;
+  background-position: 2em center;
+  cursor: pointer;
+  cursor: hand;
 }
 #offset_form label span,
 #interpolation_form label span {
-    padding-left: 36px;
+  padding-left: 36px;
 }
 label[for=stack] {
-    background-image: url(../images/offset_stack.png);
+  background-image: url(../images/offset_stack.png);
 }
 label[for=pct] {
-    background-image: url(../images/offset_pct.png);
+  background-image: url(../images/offset_pct.png);
 }
 label[for=stream] {
-    background-image: url(../images/offset_stream.png);
+  background-image: url(../images/offset_stream.png);
 }
 label[for=value] {
-    background-image: url(../images/offset_value.png);
+  background-image: url(../images/offset_value.png);
 }
 label[for=cardinal] {
-    background-image: url(../images/interp_cardinal.png);
+  background-image: url(../images/interp_cardinal.png);
 }
 label[for=linear] {
-    background-image: url(../images/interp_linear.png);
+  background-image: url(../images/interp_linear.png);
 }
 label[for=step] {
-    background-image: url(../images/interp_step.png);
+  background-image: url(../images/interp_step.png);
 }

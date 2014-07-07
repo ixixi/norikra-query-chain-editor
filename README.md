@@ -15,6 +15,8 @@ norikra query-chain editor.(QCE)
 
 ## Install and Execute
 
+### Setup and Build
+
 ```bash
 $ git clone https://github.com/ixixi/norikra-query-chain-editor
 $ cd norikra-query-chain-editor
@@ -27,16 +29,17 @@ QCE uses Norikra REST APIs. To use QCE, Norikra have to allow CORS requests or Q
 * allow CORS requests
 https://github.com/ixixi/norikra/commit/2a847f5cb3080561a7af419036ee6568be5c400f
 
-and run qce. `$ grunt server`
+and run qce as standalone. `$ grunt serve:dist`
 
 * or mount QCE on the same origin
 
 ```bash
-ln -s /path/to/norikra-query-chain-editor /path/to/norikra/public/qce
+$ grunt build
+$ ln -s /path/to/norikra-query-chain-editor/dist /path/to/norikra/public/qce
 ```
 
 and access here.
-`http://norikra.server:26578/qce/app/index.html`
+`http://norikra.server:26578/qce/index.html`
 
 ## TODO
 

@@ -176,7 +176,7 @@ module.exports = function (grunt) {
                         '<%= config.dist %>/styles/{,*/}*.css',
                         '<%= config.dist %>/images/{,*/}*.*',
                         '<%= config.dist %>/styles/fonts/{,*/}*.*',
-                        '<%= config.dist %>/*.{ico,png}'
+                        '<%= config.dist %>/*.{ico,png,jpg}'
                     ]
                 }
             }
@@ -280,10 +280,10 @@ module.exports = function (grunt) {
                     cwd: '<%= config.app %>',
                     dest: '<%= config.dist %>',
                     src: [
-                        '*.{ico,png,txt}',
+                        '*.{ico,png,jpg,txt}',
                         '.htaccess',
                         'images/{,*/}*.webp',
-                        'images/*.{ico,png}',
+                        'images/*.{ico,png,jpg}',
                         'scripts/*.js',
                         '{,*/}*.html',
                         'styles/fonts/{,*/}*.*'
@@ -309,7 +309,6 @@ module.exports = function (grunt) {
             ],
             dist: [
                 'copy:styles',
-                //'imagemin',
                 'svgmin'
             ]
         }
@@ -357,7 +356,7 @@ module.exports = function (grunt) {
         'autoprefixer',
         'concat',
         'cssmin',
-        //'uglify',
+        'uglify',
         'copy:dist',
         'rev',
         'usemin',
