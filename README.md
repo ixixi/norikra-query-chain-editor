@@ -44,4 +44,5 @@ and access here.
 ## TODO
 
 * detect conflict
-* merge server query
+* merge query
+* add/remove query

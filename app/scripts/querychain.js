@@ -236,7 +236,7 @@ var qce  = new Vue({
                 qce.updateHash();
             }).fail(function () {
             }) .always(function () {
-                qce.appendLog(LOG_TYPE.INFO,'fetch queries success.');
+                qce.appendLog(LOG_TYPE.INFO,'fetch queries succeeded.');
             });
         },
         mergeQueries: function(){
@@ -248,13 +248,13 @@ var qce  = new Vue({
             this.localQueries = $.extend(true, [], this.editOriginQueries);
             this.updateHash();
             this.displayQueries(this.localQueries);
-            qce.appendLog(LOG_TYPE.INFO,'merge queries success.');
+            qce.appendLog(LOG_TYPE.INFO,'merge queries succeeded.');
         },
         commitQueries: function(){
             this.committedQueries = $.extend(true, [], this.localQueries);
             this.updateHash();
             this.saveQueriesLocalStorage();
-            qce.appendLog(LOG_TYPE.INFO,'commit queries success.');
+            qce.appendLog(LOG_TYPE.INFO,'commit queries succeeded.');
         },
         pushQueries: function(){
             //TODO: implement
@@ -274,7 +274,7 @@ var qce  = new Vue({
                     contentType: 'application/json',
                     dataType:'json',
                     success: function(result) {
-                        qce.appendLog(LOG_TYPE.INFO,'registerQuery: "'+ query.name +'" seccuess.');
+                        qce.appendLog(LOG_TYPE.INFO,'registerQuery: "'+ query.name +'" succeeded.');
                     },
                     error: function(result) {
                         var res = result.responseJSON;
