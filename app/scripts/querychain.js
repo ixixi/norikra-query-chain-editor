@@ -325,23 +325,23 @@ var qce  = new Vue({
             });
             this.fetchQueries();
         },
-        forcePushQuery: function(){
-
-        },
         resetToServer: function(){
             this.localQueries = $.extend(true, [], this.serverQueries);
             this.editOriginQueries = $.extend(true, [], this.serverQueries);
             this.updateHash();
+            this.displayQueries(this.localQueries);
             qce.appendLog(LOG_TYPE.INFO,'reset to Server.');
         },
         resetToEditOrigin: function(){
             this.localQueries = $.extend(true, [], this.editOriginQueries);
             this.updateHash();
+            this.displayQueries(this.localQueries);
             qce.appendLog(LOG_TYPE.INFO,'reset to edit origin.');
         },
         resetToCommitted: function(){
             this.localQueries = $.extend(true, [], this.committedQueries);
             this.updateHash();
+            this.displayQueries(this.localQueries);
             qce.appendLog(LOG_TYPE.INFO,'reset to last commit.');
         },
         exportQueries: function(){
