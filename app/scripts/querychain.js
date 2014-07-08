@@ -299,7 +299,7 @@ var qce  = new Vue({
                     contentType: 'application/json',
                     dataType:'json',
                     success: function(result) {
-                        qce.appendLog(LOG_TYPE.INFO,'deregisterQuery: "'+ query.name +'" seccuess.');
+                        qce.appendLog(LOG_TYPE.INFO,'deregisterQuery: "'+ query.name +'" succeeded.');
                     },
                     error: function(result) {
                         var res = result.responseJSON;
